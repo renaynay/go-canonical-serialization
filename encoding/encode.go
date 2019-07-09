@@ -37,7 +37,7 @@ func marshalItemList(in [][]byte) []byte {
 
 	binary.LittleEndian.PutUint32(out, uint32(len(in)))
 
-	for item, _ := range in {
+	for item := range in {
 		marshaledItem := marshalItem(in[item])
 		out = append(out, marshaledItem...)
 	}
