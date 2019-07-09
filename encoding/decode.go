@@ -28,26 +28,22 @@ func unmarshalUint8(in byte) uint8 {
 func unmarshalItem(in []byte) []byte {
 	length := binary.LittleEndian.Uint32(in[:4])
 
-	return in[4:length+4]
+	return in[4 : length+4]
 }
 
-func unmarshalItemList(in []byte) [][]byte { // TODO use unmarshal Item
+func unmarshalItemList(in []byte) [][]byte {
 	index := 4
 
 	amount := int(binary.LittleEndian.Uint32(in[:index]))
 
-	var item []byte
-	var itemLen int
 	var store [][]byte
 
 	for i := 0; i < amount; i++ {
-		itemLen = int(binary.LittleEndian.Uint32(in[index : index+4]))
-
-		item = in[index+4 : index+4+itemLen]
+		item := unmarshalItem(in[index:])
 
 		store = append(store, item)
 
-		index = index + 4 + itemLen
+		index = index + 4 + len(item)
 	}
 
 	return store

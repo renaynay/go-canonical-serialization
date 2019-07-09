@@ -20,7 +20,7 @@ func Test_unmarshalUint64(t *testing.T) {
 			expected: uint64(922337203685),
 		},
 		{
-			in: []byte{187, 0, 0, 0, 0, 0, 0, 0},
+			in:       []byte{187, 0, 0, 0, 0, 0, 0, 0},
 			expected: uint64(187),
 		},
 	}
@@ -59,7 +59,7 @@ func Test_unmarshalUint32(t *testing.T) {
 			expected: uint32(922337295),
 		},
 		{
-			in: []byte{187, 0, 0, 0},
+			in:       []byte{187, 0, 0, 0},
 			expected: uint32(187),
 		},
 	}
@@ -86,7 +86,7 @@ func Benchmark_unmarshalUint32(b *testing.B) {
 
 func Test_unmarshalUint8(t *testing.T) {
 	var tests = []struct {
-		in byte
+		in       byte
 		expected uint8
 	}{
 		{in: byte(79), expected: uint8(79)},
@@ -163,7 +163,6 @@ func Test_unmarshalItemList(t *testing.T) {
 				[]byte{1, 2, 3, 5, 6, 7},
 			},
 		},
-
 	}
 
 	for i, tt := range tests {
