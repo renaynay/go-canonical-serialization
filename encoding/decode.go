@@ -28,10 +28,10 @@ func unmarshalUint8(in byte) uint8 {
 func unmarshalItem(in []byte) []byte {
 	length := binary.LittleEndian.Uint32(in[:4])
 
-	return in[4:length]
+	return in[4:length+4]
 }
 
-func unmarshalItemList(in []byte) [][]byte {
+func unmarshalItemList(in []byte) [][]byte { // TODO use unmarshal Item
 	index := 4
 
 	amount := int(binary.LittleEndian.Uint32(in[:index]))

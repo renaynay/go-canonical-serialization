@@ -114,7 +114,7 @@ func Test_marshalItem(t *testing.T) {
 	for i, tt := range tests {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			if !reflect.DeepEqual(marshalItem(tt.in), tt.expected) {
-				t.Error("return value of EncodeByteArray does not match expected value, unsuccessful")
+				t.Error("return value of marshalItem does not match expected value, unsuccessful")
 			}
 		})
 	}
