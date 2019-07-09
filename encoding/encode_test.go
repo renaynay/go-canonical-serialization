@@ -6,9 +6,9 @@ import (
 	"testing"
 )
 
-func TestEncodeU64(t *testing.T) {
+func Test_marshalUint64(t *testing.T) {
 	var tests = []struct {
-		in uint64
+		in       uint64
 		expected []byte
 	}{
 		{in: 957386, expected: []byte{202, 155, 14, 0, 0, 0, 0, 0}},
@@ -21,25 +21,28 @@ func TestEncodeU64(t *testing.T) {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			out := make([]byte, 8)
 
-			EncodeU64(tt.in, out)
+			err := marshalUint64(tt.in, out)
+			if err != nil {
+				t.Errorf(err.Error())
+			}
 
 			if !reflect.DeepEqual(out, tt.expected) {
-				t.Error("return value of EncodeU64 does not match expected value")
+				t.Error("return value of marshalUint64 does not match expected value")
 			}
 		})
 	}
 }
 
-func BenchmarkEncodeU64(b *testing.B) {
+func Benchmark_marshalUint64(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		b := make([]byte, 8)
-		EncodeU64(uint64(n), b)
+		marshalUint64(uint64(n), b)
 	}
 }
 
-func TestEncodeU32(t *testing.T) {
+func Test_marshalUint32(t *testing.T) {
 	var tests = []struct {
-		in uint32
+		in       uint32
 		expected []byte
 	}{
 		{in: 957386, expected: []byte{202, 155, 14, 0}},
@@ -52,25 +55,28 @@ func TestEncodeU32(t *testing.T) {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			out := make([]byte, 4)
 
-			EncodeU32(tt.in, out)
+			err := marshalUint32(tt.in, out)
+			if err != nil {
+				t.Errorf(err.Error())
+			}
 
 			if !reflect.DeepEqual(out, tt.expected) {
-				t.Error("return value of EncodeU32 does not match expected value")
+				t.Error("return value of marshalUint32 does not match expected value")
 			}
 		})
 	}
 }
 
-func BenchmarkEncodeU32(b *testing.B) {
+func Benchmark_marshalUint32(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		b := make([]byte, 4)
-		EncodeU32(uint32(n), b)
+		marshalUint32(uint32(n), b)
 	}
 }
 
-func TestEncodeU8(t *testing.T) {
+func Test_marshalUint8(t *testing.T) {
 	var tests = []struct {
-		in uint8
+		in       uint8
 		expected byte
 	}{
 		{in: 95, expected: byte(95)},
@@ -81,16 +87,16 @@ func TestEncodeU8(t *testing.T) {
 
 	for i, tt := range tests {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			if !reflect.DeepEqual(EncodeU8(tt.in), tt.expected) {
-				t.Error("return value of EncodeU8 does not match expected value")
+			if !reflect.DeepEqual(marshalUint8(tt.in), tt.expected) {
+				t.Error("return value of marshalUint8 does not match expected value")
 			}
 		})
 	}
 }
 
-func TestEncodeItem(t *testing.T) {
+func Test_marshalItem(t *testing.T) {
 	var tests = []struct {
-		in []byte
+		in       []byte
 		expected []byte
 	}{
 		{in: []byte{1, 2, 3, 4, 5, 6, 8}, expected: []byte{7, 0, 0, 0, 1, 2, 3, 4, 5, 6, 8}},
@@ -101,18 +107,46 @@ func TestEncodeItem(t *testing.T) {
 
 	for i, tt := range tests {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			if !reflect.DeepEqual(EncodeItem(tt.in), tt.expected) {
+			if !reflect.DeepEqual(marshalItem(tt.in), tt.expected) {
 				t.Error("return value of EncodeByteArray does not match expected value, unsuccessful")
 			}
 		})
 	}
 }
 
-func TestEncodeItemList(t *testing.T) {
-	var test = []struct {
-		in [][]byte
+func Test_marshalItemLIst(t *testing.T) {
+	var tests = []struct {
+		in       [][]byte
 		expected []byte
 	}{
+		{in: [][]byte{
+			[]byte{1, 2, 3, 4},
+			[]byte{45, 123},
+			[]byte{24, 1, 83, 9},
+			[]byte{2},
+		}, expected: []byte{
+			4, 0, 0, 0, 4, 0, 0, 0, 1, 2, 3, 4, 2, 0, 0, 0, 45, 123, 4, 0, 0, 0, 24, 1, 83, 9, 1, 0, 0, 0, 2,
+		}},
+		{in: [][]byte{
+			[]byte{1, 2, 3, 4},
+			[]byte{45, 123},
+		}, expected: []byte{
+			2, 0, 0, 0, 4, 0, 0, 0, 1, 2, 3, 4, 2, 0, 0, 0, 45, 123,
+		}},
+		{in: [][]byte{
+			[]byte{24, 1, 83, 9},
+		}, expected: []byte{
+			1, 0, 0, 0, 4, 0, 0, 0, 24, 1, 83, 9,
+		}},
+	}
 
+	for i, tt := range tests {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			out := marshalItemList(tt.in)
+
+			if !reflect.DeepEqual(out, tt.expected) {
+				t.Error("return value of marshalItemList did not match expected value, unsuccessful")
+			}
+		})
 	}
 }

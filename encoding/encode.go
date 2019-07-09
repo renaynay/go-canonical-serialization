@@ -1,23 +1,35 @@
 package encoding
 
 import (
-	"bytes"
 	"encoding/binary"
+	"errors"
 )
 
-func EncodeU64(in uint64, out []byte) {
+func marshalUint64(in uint64, out []byte) error {
+	if len(out) != 8 {
+		return errors.New("marshalUint64 requires array that is 8 bytes in length")
+	}
+
 	binary.LittleEndian.PutUint64(out, in)
+
+	return nil
 }
 
-func EncodeU32(in uint32, out []byte) {
+func marshalUint32(in uint32, out []byte) error {
+	if len(out) != 4 {
+		return errors.New("marshalUint32 requires array that is 4 bytes in length")
+	}
+
 	binary.LittleEndian.PutUint32(out, in)
+
+	return nil
 }
 
-func EncodeU8(in uint8) byte {
+func marshalUint8(in uint8) byte {
 	return byte(in)
 }
 
-func EncodeItem(in []byte) []byte {
+func marshalItem(in []byte) []byte {
 	length := make([]byte, 4)
 
 	binary.LittleEndian.PutUint32(length, uint32(len(in)))
@@ -25,12 +37,18 @@ func EncodeItem(in []byte) []byte {
 	return append(length, in...)
 }
 
-func EncodeItemList(in [][]byte) []byte {
-	length := make([]byte, 4)
+func marshalItemList(in [][]byte) []byte {
+	out := make([]byte, 4)
 
-	binary.LittleEndian.PutUint32(length, uint32(len(in)))
+	binary.LittleEndian.PutUint32(out, uint32(len(in)))
 
-	b := bytes.Join(in, nil)
+	for item, _ := range in {
+		marshaledItem := marshalItem(in[item])
+		out = append(out, marshaledItem...)
+	}
 
-	return append(length, b...)
+	return out
+}
+
+func marshalMap() { // TODO: finish func
 }
