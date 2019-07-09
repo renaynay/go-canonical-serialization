@@ -29,7 +29,7 @@ func Test_unmarshalUint64(t *testing.T) {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			out, err := unmarshalUint64(tt.in)
 			if err != nil {
-				t.Errorf(err.Error())
+				t.Error(err.Error())
 			}
 
 			if !reflect.DeepEqual(out, tt.expected) {
@@ -68,7 +68,7 @@ func Test_unmarshalUint32(t *testing.T) {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			out, err := unmarshalUint32(tt.in)
 			if err != nil {
-				t.Errorf(err.Error())
+				t.Error(err.Error())
 			}
 
 			if !reflect.DeepEqual(out, tt.expected) {
