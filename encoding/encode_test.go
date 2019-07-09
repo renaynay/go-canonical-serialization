@@ -94,6 +94,12 @@ func Test_marshalUint8(t *testing.T) {
 	}
 }
 
+func Benchmark_marshalUint8(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		marshalUint8(uint8(6))
+	}
+}
+
 func Test_marshalItem(t *testing.T) {
 	var tests = []struct {
 		in       []byte
@@ -111,6 +117,12 @@ func Test_marshalItem(t *testing.T) {
 				t.Error("return value of EncodeByteArray does not match expected value, unsuccessful")
 			}
 		})
+	}
+}
+
+func Benchmark_marshalItem(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		marshalItem([]byte{3, 4, 87, 46})
 	}
 }
 
@@ -148,5 +160,11 @@ func Test_marshalItemLIst(t *testing.T) {
 				t.Error("return value of marshalItemList did not match expected value, unsuccessful")
 			}
 		})
+	}
+}
+
+func Benchmark_marshalItemList(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		marshalItemList([][]byte{{1, 23, 5, 37}, {54, 3}, {6, 34, 4}})
 	}
 }
