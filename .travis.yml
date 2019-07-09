@@ -1,0 +1,16 @@
+language: go
+go_import_path: github.com/renaynay/go-canonical-serialization
+sudo: false
+env:
+  - GOPATH=/home/travis/gopath
+#  - GO111MODULE=on
+
+os: linux
+dist: xenial
+sudo: required
+go: 1.12.x
+
+script:
+  - go lint ./...
+  - go get ./...
+  - go test ./...
