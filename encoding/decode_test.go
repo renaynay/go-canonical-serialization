@@ -141,25 +141,44 @@ func Benchmark_unmarshalItem(b *testing.B) {
 	}
 }
 
-func Test_unmarshalItemList(t *testing.T) { //TODO: turn this into a table test
-	expected := [][]byte{
-		[]byte{1, 2, 3, 5, 6, 7},
-		[]byte{54, 32, 7},
+func Test_unmarshalItemList(t *testing.T) {
+	var tests = []struct {
+		expected [][]byte
+	}{
+		{
+			expected: [][]byte{
+				[]byte{1, 2, 3, 5, 6, 7},
+				[]byte{54, 32, 7},
+			},
+		},
+		{
+			expected: [][]byte{
+				[]byte{54, 7},
+				[]byte{1, 2},
+				[]byte{1, 2, 3, 5, 6, 7, 23, 54},
+			},
+		},
+		{
+			expected: [][]byte{
+				[]byte{1, 2, 3, 5, 6, 7},
+			},
+		},
+
 	}
 
-	marshaled := marshalItemList(expected)
-	unmarshaled := unmarshalItemList(marshaled)
+	for i, tt := range tests {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			marshaled := marshalItemList(tt.expected)
 
-	if !reflect.DeepEqual(expected, unmarshaled) {
-		t.Error("return value of unmarshalItemList does not match expected value, unsuccessful")
+			if !reflect.DeepEqual(unmarshalItemList(marshaled), tt.expected) {
+				t.Error("return value of unmarshalItemList does not match expected value, unsuccessful")
+			}
+		})
 	}
 }
 
-func Benchmark_unmarshalItemList(b *testing.B) { //TODO: benchmark test is fucked
+func Benchmark_unmarshalItemList(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		unmarshalItemList(marshalItemList([][]byte{
-			[]byte{1, 2, 3, 5, 6, 7},
-			[]byte{54, 32, 7},
-		}))
+		unmarshalItemList([]byte{2, 0, 0, 0, 6, 0, 0, 0, 1, 2, 3, 5, 6, 7, 3, 0, 0, 0, 54, 32, 7})
 	}
 }
