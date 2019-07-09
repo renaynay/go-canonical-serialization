@@ -40,10 +40,8 @@ func unmarshalItemList(in []byte) [][]byte {
 
 	for i := 0; i < amount; i++ {
 		item := unmarshalItem(in[index:])
-
 		store = append(store, item)
-
-		index = index + 4 + len(item)
+		index += 4 + len(item)
 	}
 
 	return store

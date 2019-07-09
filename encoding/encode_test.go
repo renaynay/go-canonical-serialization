@@ -19,14 +19,7 @@ func Test_marshalUint64(t *testing.T) {
 
 	for i, tt := range tests {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			out := make([]byte, 8)
-
-			err := marshalUint64(tt.in, out)
-			if err != nil {
-				t.Errorf(err.Error())
-			}
-
-			if !reflect.DeepEqual(out, tt.expected) {
+			if !reflect.DeepEqual(marshalUint64(tt.in), tt.expected) {
 				t.Error("return value of marshalUint64 does not match expected value")
 			}
 		})
@@ -35,8 +28,7 @@ func Test_marshalUint64(t *testing.T) {
 
 func Benchmark_marshalUint64(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		b := make([]byte, 8)
-		marshalUint64(uint64(n), b)
+		marshalUint64(uint64(n))
 	}
 }
 
@@ -53,14 +45,7 @@ func Test_marshalUint32(t *testing.T) {
 
 	for i, tt := range tests {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			out := make([]byte, 4)
-
-			err := marshalUint32(tt.in, out)
-			if err != nil {
-				t.Errorf(err.Error())
-			}
-
-			if !reflect.DeepEqual(out, tt.expected) {
+			if !reflect.DeepEqual(marshalUint32(tt.in), tt.expected) {
 				t.Error("return value of marshalUint32 does not match expected value")
 			}
 		})
@@ -69,8 +54,7 @@ func Test_marshalUint32(t *testing.T) {
 
 func Benchmark_marshalUint32(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		b := make([]byte, 4)
-		marshalUint32(uint32(n), b)
+		marshalUint32(uint32(n))
 	}
 }
 

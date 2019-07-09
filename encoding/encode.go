@@ -2,27 +2,22 @@ package encoding
 
 import (
 	"encoding/binary"
-	"errors"
 )
 
-func marshalUint64(in uint64, out []byte) error {
-	if len(out) != 8 {
-		return errors.New("marshalUint64 requires array that is 8 bytes in length")
-	}
+func marshalUint64(in uint64) []byte {
+	out := make([]byte, 8)
 
 	binary.LittleEndian.PutUint64(out, in)
 
-	return nil
+	return out
 }
 
-func marshalUint32(in uint32, out []byte) error {
-	if len(out) != 4 {
-		return errors.New("marshalUint32 requires array that is 4 bytes in length")
-	}
+func marshalUint32(in uint32) []byte {
+	out := make([]byte, 4)
 
 	binary.LittleEndian.PutUint32(out, in)
 
-	return nil
+	return out
 }
 
 func marshalUint8(in uint8) byte {
