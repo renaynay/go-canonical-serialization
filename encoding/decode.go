@@ -21,6 +21,14 @@ func unmarshalUint32(in []byte) (uint32, error) {
 	return binary.LittleEndian.Uint32(in), nil
 }
 
+func unmarshalUint16(in []byte) (uint16, error) {
+	if len(in) != 2 {
+		return uint16(0), errors.New("unmarshalUint16 requires array that is 2 bytes in length")
+	}
+
+	return binary.LittleEndian.Uint16(in), nil
+}
+
 func unmarshalUint8(in byte) uint8 {
 	return uint8(in)
 }

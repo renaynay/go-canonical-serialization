@@ -84,6 +84,45 @@ func Benchmark_unmarshalUint32(b *testing.B) {
 	}
 }
 
+func Test_unmarshalUint16(t *testing.T) {
+	var tests = []struct {
+		in       []byte
+		expected uint16
+	}{
+		{
+			in:       []byte{5, 0},
+			expected: uint16(5),
+		},
+		{
+			in:       []byte{154, 3},
+			expected: uint16(922),
+		},
+		{
+			in:       []byte{187, 0},
+			expected: uint16(187),
+		},
+	}
+
+	for i, tt := range tests {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			out, err := unmarshalUint16(tt.in)
+			if err != nil {
+				t.Error(err.Error())
+			}
+
+			if !reflect.DeepEqual(out, tt.expected) {
+				t.Error("return value of unmarshalUint32 does not match expected value, unsuccessful")
+			}
+		})
+	}
+}
+
+func Benchmark_unmarshalUint16(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		unmarshalUint16([]byte{64, 0})
+	}
+}
+
 func Test_unmarshalUint8(t *testing.T) {
 	var tests = []struct {
 		in       byte
