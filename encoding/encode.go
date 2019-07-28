@@ -3,7 +3,6 @@ package encoding
 import (
 	"encoding/binary"
 	"errors"
-	"reflect"
 )
 
 const (
@@ -18,7 +17,7 @@ func Marshal(val interface{}) ([]byte, error) {
 	if val == nil {
 		return nil, errors.New("untyped-value nil cannot be marshaled")
 	}
-	rval := reflect.ValueOf(val)
+	//rval := reflect.ValueOf(val)
 
 
 	return nil, nil
@@ -36,6 +35,14 @@ func marshalUint32(in uint32) []byte {
 	out := make([]byte, 4)
 
 	binary.LittleEndian.PutUint32(out, in)
+
+	return out
+}
+
+func marshalUint16(in uint16) []byte {
+	out := make([]byte, 2)
+
+	binary.LittleEndian.PutUint16(out, in)
 
 	return out
 }

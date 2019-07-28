@@ -61,6 +61,32 @@ func Benchmark_marshalUint32(b *testing.B) {
 	}
 }
 
+func Test_marshalUint16(t *testing.T) {
+	var tests = []struct {
+		in       uint16
+		expected []byte
+	}{
+		{in: 14, expected: []byte{14, 0}},
+		{in: 4, expected: []byte{4, 0}},
+		{in: 3, expected: []byte{3, 0}},
+		{in: 285, expected: []byte{29, 1}},
+	}
+
+	for i, tt := range tests {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			if !reflect.DeepEqual(marshalUint16(tt.in), tt.expected) {
+				t.Error("return value of marshalUint16 does not match expected value")
+			}
+		})
+	}
+}
+
+func Benchmark_marshalUint16(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		marshalUint16(uint16(n))
+	}
+}
+
 func Test_marshalUint8(t *testing.T) {
 	var tests = []struct {
 		in       uint8
