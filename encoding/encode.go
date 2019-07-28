@@ -2,7 +2,27 @@ package encoding
 
 import (
 	"encoding/binary"
+	"errors"
+	"reflect"
 )
+
+const (
+	UINT64            = "uint64"
+	UINT32            = "uint32"
+	UINT8             = "uint8"
+	BYTES             = "[]byte"
+	DOUBLE_BYTE_ARRAY = "[][]byte"
+)
+
+func Marshal(val interface{}) ([]byte, error) {
+	if val == nil {
+		return nil, errors.New("untyped-value nil cannot be marshaled")
+	}
+	rval := reflect.ValueOf(val)
+
+
+	return nil, nil
+}
 
 func marshalUint64(in uint64) []byte {
 	out := make([]byte, 8)

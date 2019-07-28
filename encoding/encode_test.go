@@ -6,6 +6,9 @@ import (
 	"testing"
 )
 
+func TestMarhsal(t *testing.T) {
+}
+
 func Test_marshalUint64(t *testing.T) {
 	var tests = []struct {
 		in       uint64
